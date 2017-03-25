@@ -15,20 +15,45 @@ get '/' do
   return "Great, your backend is set up. Now you can configure the Stripe example iOS apps to point here."
 end
 
-post '/charge' do
-  authenticate!
-  # Get the credit card details submitted by the form
-  source = params[:source]
+post '/connect' do
+  # authenticate!
+  # # Get the credit card details submitted by the form
+  code = params[:code]
+  error = params[:error]
 
   # Create the charge on Stripe's servers - this will charge the user's card
   begin
-    charge = Stripe::Charge.create(
+    # charge = Stripe::Charge.create(
+    #   :amount => params[:amount], # this number should be in cents
+    #   :currency => "usd",
+    #   :customer => @customer.id,
+    #   :source => source,
+    #   :description => "Example Charge"
+    # )
+  rescue Stripe::StripeError => e
+    status 402
+    return "Error creating connection: #{e.message}"
+  end
+
+  status 200
+  return "Success #{code} or #{error}"
+end
+
+post '/charge' do
+  # authenticate!
+  # Get the credit card details submitted by the form
+  source = params[:source]
+  stripeId = params[:stripeId]
+
+  # Create the charge on Stripe's servers - this will charge the user's card
+  begin
+    charge = Stripe::Charge.create({
       :amount => params[:amount], # this number should be in cents
-      :currency => "usd",
-      :customer => @customer.id,
+      :currency => "cad",
       :source => source,
-      :description => "Example Charge"
-    )
+      :description => "Example Charge",
+      }, :stripe_account => stripeId)
+
   rescue Stripe::StripeError => e
     status 402
     return "Error creating charge: #{e.message}"
