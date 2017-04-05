@@ -5,10 +5,10 @@ require 'json'
 require 'encrypted_cookie'
 
 Dotenv.load
-Stripe.api_key = 'sk_test_Jjjc1jknwZWhIyW9OlBRA6eK'
+Stripe.api_key = 'sk_live_YzUripKMAsXVBitsPXknVnJP'
 
 use Rack::Session::EncryptedCookie,
-  :secret => 'replace_me_with_a_real_secret_key' # Actually use something secret here!
+  :secret => 'sk_live_YzUripKMAsXVBitsPXknVnJP' # Actually use something secret here!
 
 get '/' do
   status 200
@@ -97,76 +97,24 @@ post '/charge_connected_account' do
 
 end
 
-# post '/customer/sources' do
-#   authenticate!
-#   source = params[:source]
-#
-#   # Adds the token to the customer's sources
-#   begin
-#     @customer.sources.create({:source => source})
-#   rescue Stripe::StripeError => e
-#     status 406
-#     return "Error adding token to customer: #{e.message}"
-#   end
-#
-#   status 200
-#   return "Successfully added source."
-# end
 
-# post '/customer/default_source' do
-#   authenticate!
-#   source = params[:source]
-#
-#   # Sets the customer's default source
+# # This endpoint is used by the Obj-C example app to create a charge.
+# post '/create_charge' do
+#   # Create the charge on Stripe's servers
 #   begin
-#     @customer.default_source = source
-#     @customer.save
+#     charge = Stripe::Charge.create(
+#       :amount => params[:amount], # this number should be in cents
+#       :currency => "usd",
+#       :source => params[:source],
+#       :description => "Example Charge"
+#     )
+#
+#     puts "inside create_charge, #{source}"
 #   rescue Stripe::StripeError => e
 #     status 402
-#     return "Error selecting default source: #{e.message}"
+#     return "Error creating charge: #{e.message}"
 #   end
 #
 #   status 200
-#   return "Successfully selected default source."
+#   return "Charge successfully created"
 # end
-
-# def authenticate!
-#   # This code simulates "loading the Stripe customer for your current session".
-#   # Your own logic will likely look very different.
-#   return @customer if @customer
-#   if session.has_key?(:customer_id)
-#     customer_id = session[:customer_id]
-#     begin
-#       @customer = Stripe::Customer.retrieve(customer_id)
-#     rescue Stripe::InvalidRequestError
-#     end
-#   else
-#     begin
-#       @customer = Stripe::Customer.create(:description => "iOS SDK example customer")
-#     rescue Stripe::InvalidRequestError
-#     end
-#     session[:customer_id] = @customer.id
-#   end
-#   @customer
-# end
-
-# This endpoint is used by the Obj-C example app to create a charge.
-post '/create_charge' do
-  # Create the charge on Stripe's servers
-  begin
-    charge = Stripe::Charge.create(
-      :amount => params[:amount], # this number should be in cents
-      :currency => "usd",
-      :source => params[:source],
-      :description => "Example Charge"
-    )
-
-    puts "inside create_charge, #{source}"
-  rescue Stripe::StripeError => e
-    status 402
-    return "Error creating charge: #{e.message}"
-  end
-
-  status 200
-  return "Charge successfully created"
-end
