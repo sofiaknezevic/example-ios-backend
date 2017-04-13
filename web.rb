@@ -6,15 +6,10 @@ require 'encrypted_cookie'
 
 Dotenv.load
 
-AWS::S3::Base.establish_connection!(
- :access_key_id   => ENV['SECRET_KEY'],
- :secret_access_key => ENV['SECRET_KEY']
-)
-
-Stripe.api_key = access_key_id
+Stripe.api_key => ENV['SECRET_KEY']
 
 use Rack::Session::EncryptedCookie,
-  :secret => access_key_id # Actually use something secret here!
+  :secret => ENV['SECRET_KEY'] # Actually use something secret here!
 
 get '/' do
   status 200
