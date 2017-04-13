@@ -8,7 +8,7 @@ Dotenv.load
 Stripe.api_key = ENV['SECRET_KEY']
 
 use Rack::Session::EncryptedCookie,
-  :secret => 'replace_me_with_a_real_secret_key' # Actually use something secret here!
+  :secret => ENV['SECRET_KEY'] # Actually use something secret here!
 
 get '/' do
   status 200
@@ -99,22 +99,22 @@ end
 
 
 # This endpoint is used by the Obj-C example app to create a charge.
-post '/create_charge' do
-  # Create the charge on Stripe's servers
-  begin
-    charge = Stripe::Charge.create(
-      :amount => params[:amount], # this number should be in cents
-      :currency => "usd",
-      :source => params[:source],
-      :description => "Example Charge"
-    )
-
-    puts "inside create_charge, #{source}"
-  rescue Stripe::StripeError => e
-    status 402
-    return "Error creating charge: #{e.message}"
-  end
-
-  status 200
-  return "Charge successfully created"
-end
+# post '/create_charge' do
+#   # Create the charge on Stripe's servers
+#   begin
+#     charge = Stripe::Charge.create(
+#       :amount => params[:amount], # this number should be in cents
+#       :currency => "usd",
+#       :source => params[:source],
+#       :description => "Example Charge"
+#     )
+#
+#     puts "inside create_charge, #{source}"
+#   rescue Stripe::StripeError => e
+#     status 402
+#     return "Error creating charge: #{e.message}"
+#   end
+#
+#   status 200
+#   return "Charge successfully created"
+# end
