@@ -87,7 +87,7 @@ post '/charge_connected_account' do
       charge = Stripe::Charge.create({
         :amount => amount,
         :currency => currency,
-        :source => source
+        :source => source,
         :stripe_account => stripe_account})
 
     rescue Stripe::StripeError => e
