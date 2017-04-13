@@ -6,10 +6,10 @@ require 'encrypted_cookie'
 
 Dotenv.load
 
-use Rack::Session::EncryptedCookie,
-  :secret => ENV['SECRET_KEY'] # Actually use something secret here!
+set :publishable_key, ENV['PUBLISHABLE_KEY']
+set :secret_key, ENV['SECRET_KEY']
 
-Stripe.api_key = ENV['SECRET_KEY']
+Stripe.api_key = settings.secret_key
 
 get '/' do
   status 200
