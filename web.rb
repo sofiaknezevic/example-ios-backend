@@ -46,16 +46,6 @@ end
 #   @customer.to_json
 # end
 
-post '/oauth/token' do
-
-  begin
-    :client_secret => settings.secret_key
-
-
-  end
-
-end
-
 post '/create_token' do
 
   number = params[:number]
