@@ -4,12 +4,14 @@ require 'dotenv'
 require 'json'
 require 'encrypted_cookie'
 
-Dotenv.load
+Dotenv.load.stripe = {
+  :secret_key => ENV['SECRET_KEY']
+}
 
-Stripe.api_key => ENV['SECRET_KEY']
+Stripe.api_key = secret_key
 
 use Rack::Session::EncryptedCookie,
-  :secret => ENV['SECRET_KEY'] # Actually use something secret here!
+  :secret => secret_key # Actually use something secret here!
 
 get '/' do
   status 200
