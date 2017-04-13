@@ -73,13 +73,14 @@ post '/create_token' do
 
 end
 
+
+
 post '/charge_connected_account' do
 
   amount = params[:amount]
   currency = params[:currency]
   source = params[:source]
   stripe_account = params[:stripe_account]
-
 
   begin
     charge = Stripe::Charge.create({
@@ -90,9 +91,6 @@ post '/charge_connected_account' do
         :account => stripe_account,
         }
       })
-
-      puts "stripe_account"
-      puts "source"
 
     rescue Stripe::StripeError => e
       status 402
