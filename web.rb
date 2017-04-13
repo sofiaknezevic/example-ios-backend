@@ -46,6 +46,16 @@ end
 #   @customer.to_json
 # end
 
+post '/oauth/token' do
+
+  begin
+    :client_secret => settings.secret_key
+
+
+  end
+
+end
+
 post '/create_token' do
 
   number = params[:number]
@@ -87,9 +97,8 @@ post '/charge_connected_account' do
       charge = Stripe::Charge.create({
         :amount => amount,
         :currency => currency,
-        :source => source
-        #:stripe_account => stripe_account
-        })
+        :source => source,
+        }, :stripe_account => stripe_account)
 
     rescue Stripe::StripeError => e
       status 402
