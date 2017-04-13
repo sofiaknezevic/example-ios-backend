@@ -88,7 +88,7 @@ post '/charge_connected_account' do
         :amount => amount,
         :currency => currency,
         :source => source,
-      }, :stripe_account => stripe_account)
+      }, {:stripe_account => stripe_account})
 
     rescue Stripe::StripeError => e
       status 402
@@ -99,25 +99,3 @@ post '/charge_connected_account' do
   return JSON.generate(charge)
 
 end
-
-
-# This endpoint is used by the Obj-C example app to create a charge.
-# post '/create_charge' do
-#   # Create the charge on Stripe's servers
-#   begin
-#     charge = Stripe::Charge.create(
-#       :amount => params[:amount], # this number should be in cents
-#       :currency => "usd",
-#       :source => params[:source],
-#       :description => "Example Charge"
-#     )
-#
-#     puts "inside create_charge, #{source}"
-#   rescue Stripe::StripeError => e
-#     status 402
-#     return "Error creating charge: #{e.message}"
-#   end
-#
-#   status 200
-#   return "Charge successfully created"
-# end
