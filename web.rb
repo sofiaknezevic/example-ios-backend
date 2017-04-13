@@ -16,39 +16,37 @@ get '/' do
   return "Great, your backend is set up."
 end
 
-post '/charge' do
-  authenticate!
-  # Get the credit card details submitted by the form
-  source = params[:source]
-
-  # Create the charge on Stripe's servers - this will charge the user's card
-  begin
-    charge = Stripe::Charge.create(
-      :amount => params[:amount], # this number should be in cents
-      :currency => "cad",
-      :customer => @customer.id,
-      :source => source,
-      :description => "Charging"
-    )
-  rescue Stripe::StripeError => e
-    status 402
-    return "Error creating charge: #{e.message}"
-  end
-
-  status 200
-  return "Charge successfully created"
-end
-
-get '/customer' do
-  authenticate!
-  status 200
-  content_type :json
-  @customer.to_json
-end
+# post '/charge' do
+#   authenticate!
+#   # Get the credit card details submitted by the form
+#   source = params[:source]
+#
+#   # Create the charge on Stripe's servers - this will charge the user's card
+#   begin
+#     charge = Stripe::Charge.create(
+#       :amount => params[:amount], # this number should be in cents
+#       :currency => "cad",
+#       :customer => @customer.id,
+#       :source => source,
+#       :description => "Charging"
+#     )
+#   rescue Stripe::StripeError => e
+#     status 402
+#     return "Error creating charge: #{e.message}"
+#   end
+#
+#   status 200
+#   return "Charge successfully created"
+# end
+#
+# get '/customer' do
+#   authenticate!
+#   status 200
+#   content_type :json
+#   @customer.to_json
+# end
 
 post '/create_token' do
-
-authenticate!
 
   number = params[:number]
   exp_month = params[:exp_month]
@@ -85,21 +83,12 @@ post '/charge_connected_account' do
   stripe_account = params[:stripe_account]
 
   begin
-    charge = Stripe::Charge.create({
-      :amount => amount,
-      :currency => currency,
-      :source => source,
-      :destination => {
-        :account => stripe_account,
-        }
-      })
 
-      # charge = Stripe::Charge.create({
-      #   :amount => amount,
-      #   :currency => currency,
-      #   :source => source,
-      #   :stripe_account => stripe_account,
-      #   })
+      charge = Stripe::Charge.create({
+        :amount => amount,
+        :currency => currency,
+        :source => source,
+      }, :stripe_account => stripe_account)
 
     rescue Stripe::StripeError => e
       status 402
