@@ -28,7 +28,7 @@ post '/charge' do
       :currency => "cad",
       :customer => @customer.id,
       :source => source,
-      :description => "Example Charge"
+      :description => "Charging"
     )
   rescue Stripe::StripeError => e
     status 402
@@ -47,6 +47,8 @@ get '/customer' do
 end
 
 post '/create_token' do
+
+authenticate!
 
   number = params[:number]
   exp_month = params[:exp_month]
@@ -83,21 +85,21 @@ post '/charge_connected_account' do
   stripe_account = params[:stripe_account]
 
   begin
-    # charge = Stripe::Charge.create({
-    #   :amount => amount,
-    #   :currency => currency,
-    #   :source => source,
-    #   :destination => {
-    #     :account => stripe_account,
-    #     }
-    #   })
+    charge = Stripe::Charge.create({
+      :amount => amount,
+      :currency => currency,
+      :source => source,
+      :destination => {
+        :account => stripe_account,
+        }
+      })
 
-      charge = Stripe::Charge.create({
-        :amount => amount,
-        :currency => currency,
-        :source => source,
-        :stripe_account => stripe_account,
-        })
+      # charge = Stripe::Charge.create({
+      #   :amount => amount,
+      #   :currency => currency,
+      #   :source => source,
+      #   :stripe_account => stripe_account,
+      #   })
 
     rescue Stripe::StripeError => e
       status 402
