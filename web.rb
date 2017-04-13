@@ -91,6 +91,9 @@ post '/charge_connected_account' do
         }
       })
 
+      puts "stripe_account"
+      puts "source"
+
     rescue Stripe::StripeError => e
       status 402
       return "Error creating charge: #{e.message}"
