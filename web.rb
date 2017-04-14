@@ -46,6 +46,14 @@ end
 #   @customer.to_json
 # end
 
+post '/get_client_key' do
+
+client_secret = settings.secret_key
+
+return client_secret
+
+end
+
 post '/create_token' do
 
   number = params[:number]
