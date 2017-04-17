@@ -57,17 +57,11 @@ post '/charge_connected_account' do
   stripe_account = params[:stripe_account]
 
   begin
-
       charge = Stripe::Charge.create({
         :amount => amount,
         :currency => currency,
         :source => source,
-        :destination => {
-          :account => 'acct_1A0fhxGZ5uXLfjSv',
-        }
-      })
-
-
+      }, :stripe_account => "acct_1A0fhxGZ5uXLfjSv")
     rescue Stripe::StripeError => e
       status 402
       return "Error creating charge: #{e.message}"
