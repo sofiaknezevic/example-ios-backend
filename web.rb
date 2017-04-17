@@ -62,7 +62,11 @@ post '/charge_connected_account' do
         :amount => amount,
         :currency => currency,
         :source => source,
-        }, :stripe_account => stripe_account)
+        :destination => {
+          :account => 'acct_1A0fhxGZ5uXLfjSv',
+        }
+      })
+
 
     rescue Stripe::StripeError => e
       status 402
