@@ -61,7 +61,7 @@ post '/charge_connected_account' do
         :amount => amount,
         :currency => currency,
         :source => source,
-      }, :stripe_account => "sk_live_OOQFeeRAONJc9ewcmmQ6FhHT")
+      }, :stripe_account => "acct_1A0fhxGZ5uXLfjSv")
     rescue Stripe::StripeError => e
       status 402
       return "Error creating charge: #{e.message}"
