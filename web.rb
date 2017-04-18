@@ -20,7 +20,7 @@ end
 
 get 'return_key' do
   status 200
-  return secret_key
+  return JSON.generate(secret_key)
 end
 
 post '/create_token' do
