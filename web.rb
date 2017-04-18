@@ -18,11 +18,6 @@ get '/' do
   return "Great, your backend is set up."
 end
 
-get 'return_key' do
-  status 200
-  return JSON.generate(secret_key)
-end
-
 post '/create_token' do
 
   number = params[:number]
